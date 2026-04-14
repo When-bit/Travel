@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>新疆伊犁环线自驾 | 8日智能行程看板</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -27,7 +27,7 @@
         /* 头部 */
         .hero {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
         .hero h1 {
             font-size: 1.8rem;
@@ -76,56 +76,51 @@
             align-items: center;
             gap: 6px;
         }
-        /* 路线图卡片 (可滑动) */
+        /* 路线图 - 椭圆形自适应换行布局 */
         .route-map {
             background: white;
             border-radius: 28px;
-            padding: 18px 16px;
+            padding: 20px 16px;
             margin-bottom: 24px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            overflow-x: auto;
-            white-space: nowrap;
         }
         .route-title {
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
             font-size: 1rem;
-            white-space: normal;
         }
-        canvas#routeCanvas {
-            display: block;
-            background: #fefcf5;
-            border-radius: 20px;
-            width: auto;
-            height: auto;
-            min-width: 880px;
-        }
-        /* 预算进度条 */
-        .budget-card {
-            background: white;
-            border-radius: 28px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-        }
-        .progress-bar-bg {
-            background: #e2e8dc;
-            border-radius: 30px;
-            height: 10px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
-        .progress-fill {
-            background: linear-gradient(90deg, #3b8c3a, #6fbc6a);
-            width: 0%;
-            height: 100%;
-        }
-        .budget-stats {
+        .route-steps {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #3f5c34;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 12px 8px;
         }
-        /* 时间轴 */
+        .route-node {
+            background: #eef3e8;
+            border-radius: 60px;  /* 椭圆形效果 */
+            padding: 8px 20px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cde0c2;
+        }
+        .route-node strong {
+            font-size: 0.9rem;
+            display: block;
+            color: #2b5e2a;
+        }
+        .route-node small {
+            font-size: 0.7rem;
+            color: #5f7c4e;
+            display: block;
+        }
+        .route-arrow {
+            font-size: 1.2rem;
+            color: #8bb56a;
+            font-weight: bold;
+        }
+        /* 时间轴卡片 */
         .timeline {
             display: flex;
             flex-direction: column;
@@ -206,6 +201,11 @@
             display: flex;
             gap: 6px;
         }
+        .transport-line {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
         .reminder-warning {
             background: #fff1e0;
             border-left: 4px solid #f5a623;
@@ -237,6 +237,8 @@
         }
         @media (max-width: 550px) {
             .day-header { flex-direction: column; align-items: flex-start; }
+            .route-node { padding: 6px 16px; min-width: 80px; }
+            .route-arrow { font-size: 1rem; }
         }
     </style>
 </head>
@@ -248,105 +250,102 @@
         <div class="badge"><i class="fas fa-calendar-alt"></i> 4月26日 — 5月3日 | 北京出发 ✈️ 落地自驾</div>
     </div>
 
+    <!-- 智能提醒模块 -->
     <div class="alert-panel" id="smartAlertPanel">
         <div class="alert-title"><i class="fas fa-bell"></i> 智能提醒</div>
         <div class="alert-list" id="alertList"></div>
     </div>
 
+    <!-- 路线图：椭圆形换行布局 -->
     <div class="route-map">
-        <div class="route-title"><i class="fas fa-map-marked-alt"></i> 环线路线示意 · 住宿/游玩标注</div>
-        <canvas id="routeCanvas" width="920" height="200" style="min-width:880px; width:100%; height:auto; aspect-ratio:920/200"></canvas>
-        <div style="font-size:11px; margin-top:8px; color:#5b7c48;">🔵 蓝色为住宿点  🟢 绿色为游玩/途经点 | 滑动查看全路线</div>
+        <div class="route-title"><i class="fas fa-map-marked-alt"></i> 环线路线 · 住宿/游玩标注</div>
+        <div class="route-steps" id="routeSteps">
+            <!-- 动态js生成，保证数据一致性 -->
+        </div>
+        <div style="font-size:11px; margin-top:12px; text-align:center; color:#5b7c48;">🔵 蓝色为住宿点  🟢 绿色为游玩点 | 沿箭头方向</div>
     </div>
 
-    <div class="budget-card">
-        <div class="budget-header" style="display:flex; justify-content:space-between;">
-            <span><i class="fas fa-coins"></i> 固定支出预算 (交通+住宿+门票)</span>
-            <span><strong id="totalBudgetSpan">¥17,850</strong></span>
-        </div>
-        <div class="progress-bar-bg"><div class="progress-fill" id="budgetFill"></div></div>
-        <div class="budget-stats">
-            <span>💰 已花费: <strong id="spentAmount">¥0</strong></span>
-            <span>📌 剩余: <strong id="leftAmount">¥0</strong></span>
-            <span><i class="fas fa-chart-line"></i> 基于当前日期累计</span>
-        </div>
-        <div style="font-size:11px; margin-top:6px;">*固定总预算:机票+租车13000 + 住宿3050 + 门票1800 = 17850元 (新增赛湖门票300)</div>
-    </div>
-
+    <!-- 时间轴卡片 -->
     <div class="timeline" id="timeline"></div>
     <div class="footer-note"><i class="fas fa-mouse-pointer"></i> 点击日期卡片展开详情 · 景点标签可查看推荐介绍</div>
 </div>
 
 <script>
-    // ---------- 行程数据 (修正版) ----------
-    // 门票: D2赛湖300, D3喀拉峻500, D6库尔德宁500(按用户原预算,含游玩消费), D7那拉提500 → 合计1800
+    // ---------- 行程数据 (修正交通格式 + 餐饮三餐 + 移除机场/租车点) ----------
     const daysData = [
-        { day:1, date:"4月26日", weekday:"周日", theme:"抵达·租车启程", weatherIcon:"✈️",
-          route:{ from:"北京", to:"伊宁", startTime:"15:00", endTime:"19:00", duration:"飞行4h" },
-          transport:"飞机", core:"抵达伊宁机场，办理租车，入住酒店，采购物资", keySpots:["伊宁市区","租车点"],
-          hotel:"万豪万枫酒店", hotelPrice:"350元/晚", meals:{ breakfast:"飞机餐", dinner:"自理/伊宁特色" },
-          fixedCostDay:{ flightRent:13000, accommodation:350, tickets:0 }, ticketsNeed:false, reminder:"检查车况，备好身份证驾驶本" },
-        { day:2, date:"4月27日", weekday:"周一", theme:"赛里木湖·冰推奇观", weatherIcon:"💧",
-          route:{ from:"伊宁", to:"赛里木湖", startTime:"06:00", endTime:"08:00", duration:"2h" },
-          subRoute2:"赛里木湖→特克斯 (17:00出发, 3.2h)",
-          transport:"自驾", core:"东门进逆时针环湖:松树头、S弯公路、点将台，赏冰推，途径果子沟大桥", keySpots:["松树头","S弯公路","点将台","果子沟大桥"],
-          hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚", meals:{ breakfast:"酒店", dinner:"特克斯马肉纳仁" },
-          fixedCostDay:{ accommodation:300, tickets:300 }, ticketsNeed:true, ticketPrice:300, reminder:"湖边风大注意保暖，冰推集中在4月下旬" },
+        { day:1, date:"4月26日", weekday:"周日", theme:"抵达·启程", weatherIcon:"✈️",
+          transportSegments: [
+              { from:"北京", to:"伊宁", startTime:"15:00", endTime:"19:00", duration:"飞行4小时", mode:"飞机" }
+          ],
+          core:"抵达伊宁机场，办理租车，入住酒店，采购物资", keySpots:["伊宁市区（补给）"],
+          hotel:"万豪万枫酒店", hotelPrice:"350元/晚",
+          meals: { breakfast:"飞机餐", lunch:"飞机餐/自理", dinner:"伊宁市区（推荐手抓饭/烤包子）" },
+          fixedCostDay:{ flightRent:13000, accommodation:350, tickets:0 }, reminder:"检查车况，备好身份证驾驶本，超市补给零食" },
+        { day:2, date:"4月27日", weekday:"周一", theme:"赛里木湖·冰推", weatherIcon:"💧",
+          transportSegments: [
+              { from:"伊宁", to:"赛里木湖", startTime:"06:00", endTime:"08:00", duration:"2小时", mode:"自驾" },
+              { from:"赛里木湖", to:"特克斯", startTime:"17:00", endTime:"20:12", duration:"3.2小时", mode:"自驾" }
+          ],
+          core:"东门进逆时针环湖：松树头、S弯、点将台，赏冰推，途经果子沟大桥", keySpots:["松树头","S弯公路","点将台","果子沟大桥"],
+          hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"赛湖景区内简餐", dinner:"特克斯县城（马肉纳仁）" },
+          fixedCostDay:{ accommodation:300, tickets:300 }, ticketsNeed:true, ticketPrice:300, reminder:"湖边风大注意保暖，冰推集中在4月下旬，南门附近最佳" },
         { day:3, date:"4月28日", weekday:"周二", theme:"喀拉峻·人体草原", weatherIcon:"🌿",
-          route:{ from:"特克斯", to:"喀拉峻草原", startTime:"09:30", endTime:"10:30", duration:"1h" },
-          subRoute2:"喀拉峻→特克斯 (19:00返程, 1h)",
-          transport:"自驾", core:"鲜花台、猎鹰台，寻找光影人体草原，傍晚返回特克斯", keySpots:["鲜花台","猎鹰台","人体草原"],
-          hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚", meals:{ breakfast:"酒店", dinner:"特克斯烤羊肉/纳仁" },
-          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区较大建议自备零食，骑马另付费" },
+          transportSegments: [
+              { from:"特克斯", to:"喀拉峻草原", startTime:"09:30", endTime:"10:30", duration:"1小时", mode:"自驾" },
+              { from:"喀拉峻", to:"特克斯", startTime:"19:00", endTime:"20:00", duration:"1小时", mode:"自驾" }
+          ],
+          core:"鲜花台、猎鹰台，寻找光影人体草原，傍晚返回特克斯", keySpots:["鲜花台","猎鹰台","人体草原"],
+          hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"喀拉峻景区内（自备干粮或简餐）", dinner:"特克斯县城（烤羊肉/纳仁）" },
+          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区较大建议自备零食，骑马另付费，下午光线适合拍人体草原" },
         { day:4, date:"4月29日", weekday:"周三", theme:"琼库什台·原始村落", weatherIcon:"🏕️",
-          route:{ from:"特克斯", to:"喀拉峻(二进/路过)", startTime:"09:00", endTime:"10:00", duration:"1h" },
-          subRoute2:"喀拉峻游玩→琼库什台 (16:00出发, 3h)",
-          transport:"自驾", core:"上午根据体力二进喀拉峻或休整，下午前往琼库什台，沿途牧场风光", keySpots:["琼库什台村","乌孙古道入口","后山观景台"],
-          hotel:"瞻德酒店(琼库民宿)", hotelPrice:"700元/晚", meals:{ breakfast:"特克斯", dinner:"琼库民宿晚餐" },
-          fixedCostDay:{ accommodation:700, tickets:0 }, ticketsNeed:false, reminder:"琼库山路弯多，最后一段限速40，骑马80-100元/小时" },
+          transportSegments: [
+              { from:"特克斯", to:"喀拉峻（二次游玩）", startTime:"09:00", endTime:"10:00", duration:"1小时", mode:"自驾" },
+              { from:"喀拉峻", to:"琼库什台", startTime:"16:00", endTime:"19:00", duration:"3小时", mode:"自驾" }
+          ],
+          core:"上午根据体力二进喀拉峻或休整，下午前往琼库什台，沿途牧场风光", keySpots:["琼库什台村","乌孙古道入口","后山观景台"],
+          hotel:"瞻德酒店(琼库民宿)", hotelPrice:"700元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"特克斯县城/简餐", dinner:"琼库什台民宿晚餐（哈萨克风味）" },
+          fixedCostDay:{ accommodation:700, tickets:0 }, reminder:"琼库山路弯多，最后一段限速40，骑马80-100元/小时，后山日落绝美" },
         { day:5, date:"4月30日", weekday:"周四", theme:"琼库深度+转场巩留", weatherIcon:"🐎",
-          route:{ from:"琼库什台", to:"巩留", startTime:"17:00", endTime:"20:00", duration:"3h" },
-          transport:"自驾", core:"上午乌孙古道轻徒步/骑马，后山观景；傍晚驱车至巩留", keySpots:["乌孙古道","琼库后山","骑马点"],
-          hotel:"巩留丽呈睿轩酒店", hotelPrice:"300元/晚", meals:{ breakfast:"民宿", dinner:"巩留夜市/抓饭" },
-          fixedCostDay:{ accommodation:300, tickets:0 }, ticketsNeed:false, reminder:"骑马建议提前谈好价格，徒步穿舒适鞋" },
+          transportSegments: [
+              { from:"琼库什台", to:"巩留", startTime:"17:00", endTime:"20:00", duration:"3小时", mode:"自驾" }
+          ],
+          core:"上午乌孙古道轻徒步/骑马，后山观景；傍晚驱车至巩留", keySpots:["乌孙古道","琼库后山","骑马点"],
+          hotel:"巩留丽呈睿轩酒店", hotelPrice:"300元/晚",
+          meals: { breakfast:"民宿早餐", lunch:"琼库什台（自备或民宿简餐）", dinner:"巩留县城（夜市/抓饭）" },
+          fixedCostDay:{ accommodation:300, tickets:0 }, reminder:"骑马建议提前谈好价格，徒步穿舒适鞋，傍晚前出发避免夜间山路" },
         { day:6, date:"5月1日", weekday:"周五", theme:"库尔德宁·雪岭云杉", weatherIcon:"⛰️",
-          route:{ from:"巩留", to:"库尔德宁", startTime:"08:00", endTime:"11:00", duration:"3h" },
-          subRoute2:"库尔德宁→新源 (18:00出发, 2h)",
-          transport:"自驾", core:"自驾进入景区，徒步齐梦德观景台，270°雪山云杉全景", keySpots:["齐梦德观景台","云杉王","十里画廊"],
-          hotel:"新源温德姆酒店", hotelPrice:"300元/晚", meals:{ breakfast:"酒店", dinner:"新源县特色拌面" },
-          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区内牛羊穿行，谨慎驾驶；徒步栈道约40分钟" },
+          transportSegments: [
+              { from:"巩留", to:"库尔德宁", startTime:"08:00", endTime:"11:00", duration:"3小时", mode:"自驾" },
+              { from:"库尔德宁", to:"新源", startTime:"18:00", endTime:"20:00", duration:"2小时", mode:"自驾" }
+          ],
+          core:"自驾进入景区，徒步齐梦德观景台，270°雪山云杉全景", keySpots:["齐梦德观景台","云杉王","十里画廊"],
+          hotel:"新源温德姆酒店", hotelPrice:"300元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"库尔德宁景区内简餐", dinner:"新源县（特色拌面/丸子汤）" },
+          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区内牛羊穿行，谨慎驾驶；徒步栈道约40分钟，穿舒适运动鞋" },
         { day:7, date:"5月2日", weekday:"周六", theme:"那拉提·空中草原", weatherIcon:"🌄",
-          route:{ from:"新源", to:"那拉提", startTime:"08:00", endTime:"09:30", duration:"1.5h" },
-          transport:"自驾", core:"游牧人家区域，网红桥打卡，骑马深入雪山下", keySpots:["游牧人家","网红桥","空中草原","森林公园"],
-          hotel:"那拉提牧星谷星空酒店", hotelPrice:"800元/晚", meals:{ breakfast:"酒店", dinner:"那拉提镇特色餐" },
-          fixedCostDay:{ accommodation:800, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序实名预约自驾票！", reminder:"空中草原海拔较高，备厚外套" },
+          transportSegments: [
+              { from:"新源", to:"那拉提", startTime:"08:00", endTime:"09:30", duration:"1.5小时", mode:"自驾" }
+          ],
+          core:"游牧人家区域，网红桥打卡，骑马深入雪山下", keySpots:["游牧人家","网红桥","空中草原","森林公园"],
+          hotel:"那拉提牧星谷星空酒店", hotelPrice:"800元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"那拉提景区内（游牧人家有小吃）", dinner:"那拉提镇（特色土火锅/烤肉）" },
+          fixedCostDay:{ accommodation:800, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序实名预约自驾票！", reminder:"空中草原海拔较高，备厚外套，网红桥上午人少" },
         { day:8, date:"5月3日", weekday:"周日", theme:"返程·伊宁", weatherIcon:"🛫",
-          route:{ from:"那拉提", to:"伊宁", startTime:"14:00", endTime:"18:00", duration:"4h" },
-          transport:"自驾+飞机", core:"下午返程伊宁，可逛喀赞其民俗街，机场还车，21:00飞北京", keySpots:["喀赞其民俗街","伊宁机场"],
-          hotel:"—", hotelPrice:"0", meals:{ breakfast:"酒店", dinner:"飞机餐" }, fixedCostDay:{ accommodation:0, tickets:0 }, reminder:"预留3小时还车+安检" }
+          transportSegments: [
+              { from:"那拉提", to:"伊宁", startTime:"14:00", endTime:"18:00", duration:"4小时", mode:"自驾" },
+              { from:"伊宁", to:"北京", startTime:"21:00", endTime:"01:00+1", duration:"飞行4小时", mode:"飞机" }
+          ],
+          core:"下午返程伊宁，可逛喀赞其民俗街，机场还车，晚上航班回京", keySpots:["喀赞其民俗街","伊宁机场"],
+          hotel:"—", hotelPrice:"0",
+          meals: { breakfast:"酒店早餐", lunch:"那拉提镇/途中简餐", dinner:"飞机餐" },
+          fixedCostDay:{ accommodation:0, tickets:0 }, reminder:"预留3小时还车+安检，喀赞其适合拍照和买手工冰淇淋" }
     ];
 
-    const TOTAL_FIXED_BUDGET = 13000 + 3050 + 1800; // 17850
-    // 辅助日期
-    const startDateRef = new Date(2026, 3, 26);
-    function getCurrentSpent() {
-        const today = new Date();
-        const refYear = 2026;
-        let spent = 0;
-        const flightDay = new Date(refYear, 3, 26);
-        if(today >= flightDay) spent += 13000;
-        daysData.forEach(day => {
-            const [month, dayNum] = day.date.replace('日','').split('月');
-            const dayDate = new Date(refYear, parseInt(month)-1, parseInt(dayNum));
-            if(today >= dayDate) {
-                if(day.fixedCostDay.accommodation) spent += day.fixedCostDay.accommodation;
-                if(day.fixedCostDay.tickets) spent += day.fixedCostDay.tickets;
-            }
-        });
-        return Math.min(spent, TOTAL_FIXED_BUDGET);
-    }
-
-    // 智能提醒 + 倒计时
+    // 固定预算总计（机票租车13000 + 住宿3050 + 门票1800 = 17850，但用户要求移除进度条，此处仅用于提醒展示不用）
+    // 智能提醒倒计时
     function generateAlerts() {
         const today = new Date();
         const refYear = 2026;
@@ -371,80 +370,38 @@
         container.innerHTML = alerts.map(a => `<div class="alert-item"><i class="fas ${a.icon}"></i> ${a.text}</div>`).join('');
     }
 
-    // 绘制路线图 (标注住宿点/游玩点)
-    function drawRouteMap() {
-        const canvas = document.getElementById('routeCanvas');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const w = 920, h = 200;
-        canvas.width = w; canvas.height = h;
-        ctx.clearRect(0,0,w,h);
-        // 定义节点 (名称, 坐标x, 类型: stay住宿, visit游玩)
+    // 生成路线图 (椭圆形节点)
+    function renderRouteSteps() {
+        // 定义节点顺序及属性 (与行程住宿/游玩对应)
         const nodes = [
-            { name:"伊宁", x:40, type:"stay", label:"🏨 住宿" },
-            { name:"赛里木湖", x:150, type:"visit", label:"🎫 游玩" },
-            { name:"特克斯", x:270, type:"stay", label:"🏨 住宿(2晚)" },
-            { name:"喀拉峻", x:360, type:"visit", label:"🌿 游玩" },
-            { name:"琼库什台", x:470, type:"stay", label:"🏨 住宿" },
-            { name:"巩留", x:590, type:"stay", label:"🏨 住宿" },
-            { name:"库尔德宁", x:690, type:"visit", label:"⛰️ 游玩" },
-            { name:"新源", x:790, type:"stay", label:"🏨 住宿" },
-            { name:"那拉提", x:880, type:"stay", label:"🏨 住宿(星空)" }
+            { name:"伊宁", type:"stay", label:"🏨 住宿" },
+            { name:"赛里木湖", type:"visit", label:"🎫 游玩" },
+            { name:"特克斯", type:"stay", label:"🏨 住宿" },
+            { name:"喀拉峻", type:"visit", label:"🌿 游玩" },
+            { name:"琼库什台", type:"stay", label:"🏨 住宿" },
+            { name:"巩留", type:"stay", label:"🏨 住宿" },
+            { name:"库尔德宁", type:"visit", label:"⛰️ 游玩" },
+            { name:"新源", type:"stay", label:"🏨 住宿" },
+            { name:"那拉提", type:"stay", label:"🏨 住宿" }
         ];
-        // 画连线
-        ctx.beginPath();
-        ctx.strokeStyle = "#87b96a";
-        ctx.lineWidth = 2.5;
-        for(let i=0;i<nodes.length-1;i++) {
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, h/2);
-            ctx.lineTo(nodes[i+1].x, h/2);
-            ctx.stroke();
-            // 箭头
-            const midX = (nodes[i].x+nodes[i+1].x)/2;
-            ctx.fillStyle = "#548c3f";
-            ctx.beginPath();
-            ctx.moveTo(midX, h/2-4);
-            ctx.lineTo(midX+6, h/2);
-            ctx.lineTo(midX, h/2+4);
-            ctx.fill();
-            // 车程时间标注
-            let duration = "";
-            if(i===0) duration="2h";
-            else if(i===1) duration="3.2h";
-            else if(i===2) duration="1h";
-            else if(i===3) duration="3h";
-            else if(i===4) duration="3h";
-            else if(i===5) duration="3h";
-            else if(i===6) duration="2h";
-            else if(i===7) duration="1.5h";
-            ctx.fillStyle = "#b4622c";
-            ctx.font = "bold 9px 'Inter'";
-            ctx.fillText(duration, midX-12, h/2-8);
-        }
-        // 绘制节点
-        nodes.forEach(node => {
-            ctx.beginPath();
-            ctx.arc(node.x, h/2, 12, 0, 2*Math.PI);
-            ctx.fillStyle = node.type === "stay" ? "#cbe6fe" : "#d9f0cf";
-            ctx.fill();
-            ctx.strokeStyle = "#58853e";
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-            ctx.fillStyle = "#2c5e2e";
-            ctx.font = "bold 10px 'Inter'";
-            ctx.fillText(node.name, node.x-20, h/2-14);
-            ctx.fillStyle = "#4f6b3c";
-            ctx.font = "9px 'Inter'";
-            ctx.fillText(node.label, node.x-20, h/2+20);
+        const container = document.getElementById('routeSteps');
+        container.innerHTML = '';
+        nodes.forEach((node, idx) => {
+            const span = document.createElement('div');
+            span.className = 'route-node';
+            span.style.background = node.type === 'stay' ? '#e1f0fe' : '#e2f3db';
+            span.innerHTML = `<strong>${node.name}</strong><small>${node.label}</small>`;
+            container.appendChild(span);
+            if(idx < nodes.length-1) {
+                const arrow = document.createElement('div');
+                arrow.className = 'route-arrow';
+                arrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
+                container.appendChild(arrow);
+            }
         });
-        // 图例
-        ctx.fillStyle = "#3e6b31";
-        ctx.font = "8px monospace";
-        ctx.fillText("🔵 蓝色圆圈=住宿点   🟢 绿色=游玩景点", 20, h-12);
     }
 
-    // 景点详情库 (扩充)
+    // 景点详情库
     const spotInfoMap = {
         "松树头":"登高俯瞰赛湖全景，木栈道徒步约30分钟，拍摄点将台方向最佳。",
         "S弯公路":"公路大片经典机位，背景雪山+湖泊，建议长焦拍摄。",
@@ -459,11 +416,21 @@
         "游牧人家":"那拉提核心，网红桥、森林草原，骑马点集中。",
         "网红桥":"小桥流水背景雪山，排队拍照，建议早去。",
         "空中草原":"那拉提招牌，海拔2200米，六月雪峰野花。",
-        "喀赞其民俗街":"伊宁蓝色小镇，维吾尔风情，适合拍照喝酸奶。"
+        "喀赞其民俗街":"伊宁蓝色小镇，维吾尔风情，适合拍照喝酸奶。",
+        "伊宁市区（补给）":"采购物资，推荐六星街或汉人街美食。"
     };
     function showSpotInfo(spot) {
         const desc = spotInfoMap[spot] || `${spot} · 伊犁必去打卡地，建议预留1-2小时游览。`;
         alert(`✨ ${spot}\n${desc}`);
+    }
+
+    // 格式化交通显示
+    function formatTransport(segments) {
+        if(!segments || segments.length===0) return '—';
+        return segments.map(seg => {
+            let modeIcon = seg.mode === '飞机' ? '✈️' : '🚗';
+            return `<div class="transport-line">${modeIcon} ${seg.startTime} ${seg.from}出发 ——> ${seg.endTime} ${seg.to}到达（车程${seg.duration}）</div>`;
+        }).join('');
     }
 
     // 渲染时间轴
@@ -475,11 +442,9 @@
             const [month, dayNum] = day.date.replace('日','').split('月');
             const dayDate = new Date(refYear, parseInt(month)-1, parseInt(dayNum));
             const isToday = (today.toDateString() === dayDate.toDateString());
-            const transportIcon = day.transport === "飞机" ? "fa-plane" : "fa-car";
             const spotsHtml = day.keySpots.map(spot => `<button class="btn-scene" data-spot="${spot}">📍 ${spot}</button>`).join('');
-            let routeText = `${day.route.from} ${day.route.startTime} → ${day.route.to} ${day.route.endTime} (${day.route.duration})`;
-            if(day.subRoute2) routeText += ` ； 后续：${day.subRoute2}`;
-            const mealsText = `早餐: ${day.meals.breakfast} / 晚餐: ${day.meals.dinner}`;
+            const transportHtml = formatTransport(day.transportSegments);
+            const mealsText = `早餐: ${day.meals.breakfast} / 午餐: ${day.meals.lunch} / 晚餐: ${day.meals.dinner}`;
             let extraReminder = "";
             if(day.urgentReminder) extraReminder = `<div class="reminder-warning"><i class="fas fa-bell"></i> ${day.urgentReminder}</div>`;
             if(day.reminder && !day.urgentReminder) extraReminder = `<div class="reminder-warning"><i class="fas fa-info-circle"></i> ${day.reminder}</div>`;
@@ -494,10 +459,10 @@
                         </div>
                         <div class="day-details">
                             <div class="info-grid">
-                                <div class="info-item"><div class="info-label"><i class="fas ${transportIcon}"></i> 交通</div><div>${routeText}</div></div>
+                                <div class="info-item"><div class="info-label"><i class="fas fa-road"></i> 交通</div><div>${transportHtml}</div></div>
                                 <div class="info-item"><div class="info-label"><i class="fas fa-map-marker-alt"></i> 核心日程</div><div>${day.core}</div><div style="margin-top:6px">${spotsHtml}</div></div>
                                 <div class="info-item"><div class="info-label"><i class="fas fa-hotel"></i> 住宿 & 餐饮</div><div><strong>${day.hotel}</strong> ${day.hotelPrice}</div><div>🍽️ ${mealsText}</div></div>
-                                <div class="info-item"><div class="info-label"><i class="fas fa-chart-simple"></i> 预算提醒</div><div>🏨 ${day.fixedCostDay.accommodation?'¥'+day.fixedCostDay.accommodation:'无'} / 🎫 ${day.fixedCostDay.tickets?'¥'+day.fixedCostDay.tickets:'无'}</div>${day.ticketsNeed ? '<div>🎟️ 现场/预约购票</div>' : ''}</div>
+                                <div class="info-item"><div class="info-label"><i class="fas fa-chart-simple"></i> 当日支出</div><div>🏨 ${day.fixedCostDay.accommodation?'¥'+day.fixedCostDay.accommodation:'无'} / 🎫 ${day.fixedCostDay.tickets?'¥'+day.fixedCostDay.tickets:'无'}</div>${day.ticketsNeed ? '<div>🎟️ 现场/预约购票</div>' : ''}</div>
                             </div>
                             ${extraReminder}
                         </div>
@@ -519,21 +484,10 @@
         });
     }
 
-    function updateBudget() {
-        const spent = getCurrentSpent();
-        const percent = (spent / TOTAL_FIXED_BUDGET) * 100;
-        document.getElementById('budgetFill').style.width = `${Math.min(percent,100)}%`;
-        document.getElementById('spentAmount').innerText = `¥${spent.toFixed(0)}`;
-        document.getElementById('leftAmount').innerText = `¥${(TOTAL_FIXED_BUDGET - spent).toFixed(0)}`;
-        document.getElementById('totalBudgetSpan').innerText = `¥${TOTAL_FIXED_BUDGET}`;
-    }
-
     function init() {
+        renderRouteSteps();
         renderTimeline();
-        drawRouteMap();
         renderAlerts();
-        updateBudget();
-        window.addEventListener('resize', () => drawRouteMap());
     }
     init();
 </script>
