@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>新疆伊犁环线自驾 | 8日智能行程看板</title>
+    <title>新疆伊犁环线 | 8日行程看板（乌市进出）</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -61,9 +61,9 @@
 <body>
 <div class="container">
     <div class="hero">
-        <h1><i class="fas fa-car-side"></i> 伊犁环线·全景自驾</h1>
-        <p>赛里木湖 · 喀拉峻 · 琼库什台 · 库尔德宁 · 那拉提</p>
-        <div class="badge"><i class="fas fa-calendar-alt"></i> 4月26日 — 5月3日 | 北京出发 ✈️ 落地自驾</div>
+        <h1><i class="fas fa-car-side"></i> 伊犁环线·7日自驾（乌市进出）</h1>
+        <p>赛里木湖 · 喀拉峻 · 库尔德宁 · 那拉提 | 火车卧铺返程</p>
+        <div class="badge"><i class="fas fa-calendar-alt"></i> 4月26日 — 5月3日 | 北京✈️乌市，火车夜车回</div>
     </div>
 
     <!-- 智能提醒模块 -->
@@ -72,12 +72,12 @@
         <div class="alert-list" id="alertList"></div>
     </div>
 
-    <!-- 天气与穿衣指南模块（实时天气） -->
+    <!-- 实时天气模块 -->
     <div class="info-card">
         <div class="info-title"><i class="fas fa-cloud-sun"></i> 实时天气 & 穿衣指南</div>
         <div class="weather-grid" id="weatherGuide"></div>
         <div style="font-size: 0.7rem; text-align: center; margin-top: 12px; color: #6c8660;">
-            ※ 数据来源 OpenWeatherMap，实时更新 | 穿衣建议基于历史经验
+            ※ 数据实时更新 | 穿衣建议基于当地经验
         </div>
     </div>
 
@@ -87,90 +87,90 @@
         <div class="checklist" id="checklist"></div>
     </div>
 
-    <!-- 路线图 -->
+    <!-- 环线路线图 -->
     <div class="route-map">
-        <div class="route-title"><i class="fas fa-map-marked-alt"></i> 环线路线 · 住宿/游玩标注 + 车程时间</div>
+        <div class="route-title"><i class="fas fa-map-marked-alt"></i> 环线路线 · 车程+住宿标注</div>
         <div class="route-steps" id="routeSteps"></div>
-        <div style="font-size:11px; margin-top:12px; text-align:center; color:#5b7c48;">🔵 蓝色为住宿点  🟢 绿色为游玩点 | 数字为车程 | 特克斯连住两晚</div>
+        <div style="font-size:11px; margin-top:12px; text-align:center; color:#5b7c48;">🔵 住宿点  🟢 游玩点 | 数字为车程 | 火车返程</div>
     </div>
 
     <!-- 时间轴卡片 -->
     <div class="timeline" id="timeline"></div>
-    <div class="footer-note"><i class="fas fa-mouse-pointer"></i> 点击日期卡片展开详情 · 景点标签可查看推荐介绍</div>
+    <div class="footer-note"><i class="fas fa-mouse-pointer"></i> 点击日期卡片展开详情 · 景点标签可查看推荐</div>
 </div>
 
 <script>
-    // ======================== 行程数据（餐饮推荐已细化） ========================
+    // ======================== 行程数据（基于用户表格，舍弃琼库什台） ========================
     const daysData = [
         { day:1, date:"4月26日", weekday:"周日", theme:"抵达·启程",
-          transportSegments: [ { from:"北京", to:"伊宁", startTime:"15:00", endTime:"19:00", duration:"飞行4小时", mode:"飞机" } ],
-          core:"抵达伊宁机场，办理租车，入住酒店，采购物资", keySpots:["伊宁市区（补给）"],
-          hotel:"万豪万枫酒店", hotelPrice:"350元/晚",
-          meals: { breakfast:"飞机餐", lunch:"飞机餐/自理", dinner:"伊宁市区·艾勒喀斯尔餐厅（维吾尔传统菜，推荐烤包子、手抓饭）" },
-          fixedCostDay:{ flightRent:13000, accommodation:350, tickets:0 }, reminder:"检查车况，备好身份证驾驶本，超市补给零食" },
-        { day:2, date:"4月27日", weekday:"周一", theme:"赛里木湖·冰推",
-          transportSegments: [ { from:"伊宁", to:"赛里木湖", startTime:"06:00", endTime:"08:00", duration:"2小时", mode:"自驾" }, { from:"赛里木湖", to:"特克斯", startTime:"17:00", endTime:"20:12", duration:"3.2小时", mode:"自驾" } ],
-          core:"东门进逆时针环湖：松树头、S弯、点将台，赏冰推，途经果子沟大桥", keySpots:["松树头","S弯公路","点将台","果子沟大桥"],
+          transportSegments: [ { from:"北京", to:"乌鲁木齐", startTime:"20:00", endTime:"次日00:00+", duration:"飞行4小时", mode:"飞机" } ],
+          core:"抵达乌鲁木齐机场，办理租车，入住酒店", keySpots:["乌鲁木齐市区"],
+          hotel:"乌鲁木齐酒店（推荐友好大酒店）", hotelPrice:"500元/晚",
+          meals: { breakfast:"自理", lunch:"自理", dinner:"飞机餐" },
+          fixedCostDay:{ flightRent:5500, accommodation:500, tickets:0 }, reminder:"检查车况，备好身份证驾驶本，超市补给" },
+        { day:2, date:"4月27日", weekday:"周一", theme:"长途奔袭·赛湖", weatherIcon:"🚗",
+          transportSegments: [ { from:"乌鲁木齐", to:"赛里木湖", startTime:"10:00", endTime:"16:00", duration:"6小时", mode:"自驾" } ],
+          core:"乌鲁木齐出发，沿连霍高速前往赛里木湖，途中简餐，下午抵达赛湖，傍晚环湖", keySpots:["赛里木湖东门","松树头"],
+          hotel:"赛里木湖·塔玛暇尔", hotelPrice:"600元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"途中服务区简餐", dinner:"赛湖景区餐厅（高白鲑鱼）" },
+          fixedCostDay:{ accommodation:600, tickets:0 }, reminder:"长途驾驶注意休息，赛湖傍晚风大，备外套" },
+        { day:3, date:"4月28日", weekday:"周二", theme:"赛湖冰推·特克斯八卦城", weatherIcon:"💧",
+          transportSegments: [ { from:"赛里木湖", to:"特克斯", startTime:"17:00", endTime:"20:12", duration:"3.2小时", mode:"自驾" } ],
+          core:"上午环湖逆时针：松树头、S弯、点将台，赏冰推奇观；下午途经果子沟大桥，傍晚抵达特克斯", keySpots:["松树头","S弯公路","点将台","果子沟大桥"],
           hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚",
-          meals: { breakfast:"酒店早餐", lunch:"赛湖景区·高白鲑鱼餐厅（特色冷水鱼）", dinner:"特克斯·马白开羊排揪片子（当地必吃，马肉纳仁、羊排揪片）" },
-          fixedCostDay:{ accommodation:300, tickets:300 }, ticketsNeed:true, reminder:"湖边风大注意保暖，冰推集中在4月下旬，南门附近最佳" },
-        { day:3, date:"4月28日", weekday:"周二", theme:"喀拉峻·人体草原",
-          transportSegments: [ { from:"特克斯", to:"喀拉峻草原", startTime:"09:30", endTime:"10:30", duration:"1小时", mode:"自驾" }, { from:"喀拉峻", to:"特克斯", startTime:"19:00", endTime:"20:00", duration:"1小时", mode:"自驾" } ],
+          meals: { breakfast:"酒店早餐", lunch:"赛湖景区简餐", dinner:"特克斯·马肉纳仁（马白开羊排揪片子）" },
+          fixedCostDay:{ accommodation:300, tickets:300 }, ticketsNeed:true, reminder:"冰推季南门最佳，湖边风大注意保暖" },
+        { day:4, date:"4月29日", weekday:"周三", theme:"喀拉峻·人体草原", weatherIcon:"🌿",
+          transportSegments: [ { from:"特克斯", to:"喀拉峻", startTime:"10:00", endTime:"11:00", duration:"1小时", mode:"自驾" }, { from:"喀拉峻", to:"特克斯", startTime:"18:00", endTime:"19:00", duration:"1小时", mode:"自驾" } ],
           core:"鲜花台、猎鹰台，寻找光影人体草原，傍晚返回特克斯", keySpots:["鲜花台","猎鹰台","人体草原"],
           hotel:"特克斯天悦生态酒店", hotelPrice:"300元/晚",
-          meals: { breakfast:"酒店早餐", lunch:"喀拉峻景区内·牧民毡房简餐（奶茶+馕+手抓肉）", dinner:"特克斯·鼎佳私房菜（大盘鸡、椒麻鸡）" },
-          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区较大建议自备零食，骑马另付费，下午光线适合拍人体草原" },
-        { day:4, date:"4月29日", weekday:"周三", theme:"琼库什台·原始村落",
-          transportSegments: [ { from:"特克斯", to:"喀拉峻（二次游玩）", startTime:"09:00", endTime:"10:00", duration:"1小时", mode:"自驾" }, { from:"喀拉峻", to:"琼库什台", startTime:"16:00", endTime:"19:00", duration:"3小时", mode:"自驾" } ],
-          core:"上午根据体力二进喀拉峻或休整，下午前往琼库什台，沿途牧场风光", keySpots:["琼库什台村","乌孙古道入口","后山观景台"],
-          hotel:"瞻德酒店(琼库民宿)", hotelPrice:"700元/晚",
-          meals: { breakfast:"酒店早餐", lunch:"特克斯·赞一口酸奶店（简餐+手工酸奶）", dinner:"琼库民宿·老板特制土火锅（需提前预订，配野生菌和羊肉）" },
-          fixedCostDay:{ accommodation:700, tickets:0 }, reminder:"琼库山路弯多，最后一段限速40，骑马80-100元/小时，后山日落绝美" },
-        { day:5, date:"4月30日", weekday:"周四", theme:"琼库深度+转场巩留",
-          transportSegments: [ { from:"琼库什台", to:"巩留", startTime:"17:00", endTime:"20:00", duration:"3小时", mode:"自驾" } ],
-          core:"上午乌孙古道轻徒步/骑马，后山观景；傍晚驱车至巩留", keySpots:["乌孙古道","琼库后山","骑马点"],
-          hotel:"巩留丽呈睿轩酒店", hotelPrice:"300元/晚",
-          meals: { breakfast:"民宿早餐", lunch:"琼库什台·乌孙古道入口毡房（烤肉+奶茶）", dinner:"巩留·西域盛宴餐厅（特色椒麻鸡、野蘑菇汤饭）" },
-          fixedCostDay:{ accommodation:300, tickets:0 }, reminder:"骑马建议提前谈好价格，徒步穿舒适鞋，傍晚前出发避免夜间山路" },
-        { day:6, date:"5月1日", weekday:"周五", theme:"库尔德宁·雪岭云杉",
-          transportSegments: [ { from:"巩留", to:"库尔德宁", startTime:"08:00", endTime:"11:00", duration:"3小时", mode:"自驾" }, { from:"库尔德宁", to:"新源", startTime:"18:00", endTime:"20:00", duration:"2小时", mode:"自驾" } ],
-          core:"自驾进入景区，徒步齐梦德观景台，270°雪山云杉全景", keySpots:["齐梦德观景台","云杉王","十里画廊"],
+          meals: { breakfast:"酒店早餐", lunch:"喀拉峻景区自备干粮", dinner:"特克斯·鼎佳私房菜（大盘鸡）" },
+          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区较大自备零食，下午光线最佳" },
+        { day:5, date:"4月30日", weekday:"周四", theme:"库尔德宁·雪岭云杉", weatherIcon:"⛰️",
+          transportSegments: [ { from:"特克斯", to:"库尔德宁", startTime:"10:00", endTime:"13:00", duration:"3小时", mode:"自驾" }, { from:"库尔德宁", to:"新源", startTime:"18:00", endTime:"20:00", duration:"2小时", mode:"自驾" } ],
+          core:"自驾进入库尔德宁，徒步齐梦德观景台，270°雪山云杉全景", keySpots:["齐梦德观景台","云杉王","十里画廊"],
           hotel:"新源温德姆酒店", hotelPrice:"300元/晚",
-          meals: { breakfast:"酒店早餐", lunch:"库尔德宁景区内·哈萨克牧家乐（包尔萨克+酸奶）", dinner:"新源·阿勒泰风味餐厅（那仁、胡尔达克）" },
-          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区内牛羊穿行，谨慎驾驶；徒步栈道约40分钟，穿舒适运动鞋" },
-        { day:7, date:"5月2日", weekday:"周六", theme:"那拉提·空中草原",
+          meals: { breakfast:"酒店早餐", lunch:"库尔德宁景区简餐", dinner:"新源县（特色拌面）" },
+          fixedCostDay:{ accommodation:300, tickets:500 }, ticketsNeed:true, reminder:"景区牛羊穿行，徒步栈道约40分钟，穿运动鞋" },
+        { day:6, date:"5月1日", weekday:"周五", theme:"那拉提·空中草原", weatherIcon:"🌄",
           transportSegments: [ { from:"新源", to:"那拉提", startTime:"08:00", endTime:"09:30", duration:"1.5小时", mode:"自驾" } ],
           core:"游牧人家区域，网红桥打卡，骑马深入雪山下", keySpots:["游牧人家","网红桥","空中草原","森林公园"],
-          hotel:"那拉提牧星谷星空酒店", hotelPrice:"800元/晚",
-          meals: { breakfast:"酒店早餐", lunch:"那拉提·游牧人家小吃点（现烤羊肉串、酸奶）", dinner:"那拉提·疆湖味道餐厅（土火锅、烤羊排）" },
-          fixedCostDay:{ accommodation:800, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序实名预约自驾票！", reminder:"空中草原海拔较高，备厚外套，网红桥上午人少" },
-        { day:8, date:"5月3日", weekday:"周日", theme:"返程·伊宁",
-          transportSegments: [ { from:"那拉提", to:"伊宁", startTime:"14:00", endTime:"18:00", duration:"4小时", mode:"自驾" }, { from:"伊宁", to:"北京", startTime:"21:00", endTime:"01:00+1", duration:"飞行4小时", mode:"飞机" } ],
-          core:"下午返程伊宁，可逛喀赞其民俗街，机场还车，晚上航班回京", keySpots:["喀赞其民俗街","伊宁机场"],
+          hotel:"那拉提金陵山庄（或牧星谷）", hotelPrice:"1000元/晚",
+          meals: { breakfast:"酒店早餐", lunch:"那拉提景区内小吃", dinner:"那拉提镇（土火锅）" },
+          fixedCostDay:{ accommodation:1000, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序实名预约自驾票！", reminder:"空中草原海拔较高，备厚外套，网红桥上午人少" },
+        { day:7, date:"5月2日", weekday:"周六", theme:"返程·伊宁火车", weatherIcon:"🚆",
+          transportSegments: [ { from:"那拉提", to:"伊宁", startTime:"14:00", endTime:"18:00", duration:"4小时", mode:"自驾" }, { from:"伊宁", to:"乌鲁木齐", startTime:"23:00", endTime:"07:00+1", duration:"夜卧火车8小时", mode:"火车" } ],
+          core:"下午从那拉提返回伊宁，市区喀赞其民俗街，晚餐后前往伊宁火车站，乘夜卧火车回乌鲁木齐", keySpots:["喀赞其民俗街","伊宁火车站"],
+          hotel:"火车卧铺", hotelPrice:"250元/人（软卧）",
+          meals: { breakfast:"酒店早餐", lunch:"那拉提镇简餐", dinner:"伊宁市区（烤包子/抓饭）" },
+          fixedCostDay:{ accommodation:500, tickets:0 }, reminder:"火车票需提前购买，软卧更舒适；预留充足还车时间" },
+        { day:8, date:"5月3日", weekday:"周日", theme:"乌鲁木齐·返京", weatherIcon:"🛫",
+          transportSegments: [ { from:"乌鲁木齐", to:"北京", startTime:"14:00", endTime:"18:00", duration:"飞行4小时", mode:"飞机" } ],
+          core:"早上抵达乌鲁木齐，上午可逛大巴扎或红山公园，中午前往机场，下午飞回北京", keySpots:["乌鲁木齐大巴扎","红山公园"],
           hotel:"—", hotelPrice:"0",
-          meals: { breakfast:"酒店早餐", lunch:"那拉提镇·歹歹的巴扎（特色拌面）", dinner:"飞机餐" },
-          fixedCostDay:{ accommodation:0, tickets:0 }, reminder:"预留3小时还车+安检，喀赞其适合拍照和买手工冰淇淋" }
+          meals: { breakfast:"火车早餐/自理", lunch:"乌鲁木齐市区", dinner:"飞机餐" },
+          fixedCostDay:{ accommodation:0, tickets:0 }, reminder:"提前3小时到机场，注意火车抵达时间衔接" }
     ];
 
-    // 地点坐标（用于实时天气）
+    // 地点坐标（用于实时天气，覆盖主要停留点）
     const locationCoords = {
-        "伊宁": { lat: 43.909, lon: 81.317 },
+        "乌鲁木齐": { lat: 43.826, lon: 87.617 },
         "赛里木湖": { lat: 44.589, lon: 81.163 },
+        "特克斯": { lat: 43.215, lon: 81.836 },
         "喀拉峻": { lat: 43.083, lon: 82.217 },
-        "琼库什台": { lat: 43.059, lon: 81.996 },
-        "巩留": { lat: 43.483, lon: 82.233 },
         "库尔德宁": { lat: 43.253, lon: 82.616 },
-        "那拉提": { lat: 43.278, lon: 84.115 }
+        "新源": { lat: 43.430, lon: 83.263 },
+        "那拉提": { lat: 43.278, lon: 84.115 },
+        "伊宁": { lat: 43.909, lon: 81.317 }
     };
     const OPENWEATHER_API_KEY = "0262ad06edbf51576a9467075329c784";  // 您的API key
 
-    // 辅助函数：获取单个地点的天气
     async function fetchWeather(city, lat, lon) {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=zh_cn`;
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
             if (data.main && data.weather) {
                 return {
                     temp: `${Math.round(data.main.temp_min)}~${Math.round(data.main.temp_max)}°C`,
@@ -178,62 +178,48 @@
                     iconCode: data.weather[0].icon
                 };
             }
-        } catch (error) {
-            console.warn(`获取 ${city} 天气失败:`, error);
-        }
+        } catch(e) { console.warn(city, e); }
         return null;
     }
 
-    // 渲染实时天气（异步）
     async function renderWeather() {
         const container = document.getElementById('weatherGuide');
-        container.innerHTML = '<div class="text-center" style="grid-column:1/-1;">⏳ 正在获取实时天气...</div>';
-        
-        // 按顺序请求（伊宁、赛湖、喀拉峻、琼库、巩留、库尔德宁、那拉提）
-        const orderedCities = ["伊宁", "赛里木湖", "喀拉峻", "琼库什台", "巩留", "库尔德宁", "那拉提"];
-        const weatherResults = [];
-        for (let city of orderedCities) {
+        container.innerHTML = '<div style="grid-column:1/-1; text-align:center;">⏳ 获取实时天气...</div>';
+        const order = ["乌鲁木齐","赛里木湖","特克斯","喀拉峻","库尔德宁","新源","那拉提","伊宁"];
+        const results = [];
+        for (let city of order) {
             const coord = locationCoords[city];
             if (coord) {
-                const weather = await fetchWeather(city, coord.lat, coord.lon);
-                weatherResults.push({ city, weather });
-            } else {
-                weatherResults.push({ city, weather: null });
-            }
+                const w = await fetchWeather(city, coord.lat, coord.lon);
+                results.push({ city, weather: w });
+            } else { results.push({ city, weather: null }); }
         }
-        
-        // 生成卡片HTML
         let html = '';
-        for (let item of weatherResults) {
+        for (let item of results) {
             const w = item.weather;
             let iconHtml = '<i class="fas fa-cloud"></i>';
             if (w) {
-                // 根据天气代码简单映射FontAwesome图标
                 const code = w.iconCode;
                 if (code.includes('01')) iconHtml = '<i class="fas fa-sun"></i>';
                 else if (code.includes('02')) iconHtml = '<i class="fas fa-cloud-sun"></i>';
-                else if (code.includes('03') || code.includes('04')) iconHtml = '<i class="fas fa-cloud"></i>';
-                else if (code.includes('09') || code.includes('10')) iconHtml = '<i class="fas fa-cloud-rain"></i>';
+                else if (code.includes('03')||code.includes('04')) iconHtml = '<i class="fas fa-cloud"></i>';
+                else if (code.includes('09')||code.includes('10')) iconHtml = '<i class="fas fa-cloud-rain"></i>';
                 else if (code.includes('11')) iconHtml = '<i class="fas fa-bolt"></i>';
                 else if (code.includes('13')) iconHtml = '<i class="fas fa-snowflake"></i>';
                 else iconHtml = '<i class="fas fa-smog"></i>';
-            } else {
-                iconHtml = '<i class="fas fa-question-circle"></i>';
             }
-            
             const tempDisplay = w ? w.temp : '--°C';
-            const descDisplay = w ? w.desc : '暂无实时数据';
-            // 穿衣建议保留静态（基于历史经验）
+            const descDisplay = w ? w.desc : '暂无实时';
             let dressStatic = '';
-            if (item.city === '伊宁') dressStatic = '长袖T恤+薄外套';
+            if (item.city === '乌鲁木齐') dressStatic = '长袖+薄外套';
             else if (item.city === '赛里木湖') dressStatic = '冲锋衣+抓绒+手套';
+            else if (item.city === '特克斯') dressStatic = '防风外套';
             else if (item.city === '喀拉峻') dressStatic = '防风外套+帽子';
-            else if (item.city === '琼库什台') dressStatic = '防水冲锋衣+徒步鞋';
-            else if (item.city === '巩留') dressStatic = '软壳裤+长袖';
             else if (item.city === '库尔德宁') dressStatic = '抓绒+雨衣';
+            else if (item.city === '新源') dressStatic = '软壳裤+长袖';
             else if (item.city === '那拉提') dressStatic = '羽绒内胆+墨镜';
-            else dressStatic = '参考历史天气';
-            
+            else if (item.city === '伊宁') dressStatic = '薄外套';
+            else dressStatic = '参考当地天气';
             html += `<div class="weather-item">
                 <div class="weather-day">${item.city}</div>
                 ${iconHtml}
@@ -244,23 +230,21 @@
         container.innerHTML = html;
     }
 
-    const checklistItems = ["身份证+驾驶证", "雨衣/冲锋衣", "徒步鞋+防晒霜", "感冒药+肠胃药", "充电宝+离线地图", "现金（骑马用）", "租车全险确认", "暖宝宝+保温杯"];
-    
-    // 智能提醒
+    const checklistItems = ["身份证+驾驶证", "雨衣/冲锋衣", "徒步鞋+防晒霜", "感冒药+肠胃药", "充电宝+离线地图", "现金（骑马用）", "租车全险确认", "暖宝宝+保温杯", "火车票电子凭证"];
+
     function generateAlerts() {
         const today = new Date();
         const refYear = 2026;
         const depDate = new Date(refYear, 3, 26);
         const timeDiff = Math.ceil((depDate - today) / (1000*3600*24));
         const alerts = [];
-        if(timeDiff > 0) alerts.push({icon:"fa-hourglass-half", text:`距离出发还有 ${timeDiff} 天，请确认机票及租车订单`});
+        if(timeDiff > 0) alerts.push({icon:"fa-hourglass-half", text:`距离出发还有 ${timeDiff} 天，确认机票及租车`});
         else if(timeDiff === 0) alerts.push({icon:"fa-plane", text:"今日出发！祝旅途顺利"});
-        else alerts.push({icon:"fa-check-circle", text:"行程进行中，注意当地天气变化"});
+        else alerts.push({icon:"fa-check-circle", text:"行程进行中"});
         const naranDate = new Date(refYear, 4, 2);
-        if(today < naranDate && (naranDate - today) <= 7) alerts.push({icon:"fa-ticket-alt", text:"那拉提自驾票务必提前7天预约！今日可操作"});
-        if(today >= new Date(refYear, 3, 25) && today < naranDate) alerts.push({icon:"fa-exclamation-triangle", text:"那拉提预约窗口开启，立即登录小程序购票"});
-        alerts.push({icon:"fa-car", text:"库尔德宁/琼库山路窄弯多，谨慎驾驶"});
-        if(today >= new Date(refYear, 3, 20) && today <= new Date(refYear, 4, 5)) alerts.push({icon:"fa-snowflake", text:"赛里木湖冰推季，南门附近最佳观赏"});
+        if(today < naranDate && (naranDate - today) <= 7) alerts.push({icon:"fa-ticket-alt", text:"那拉提自驾票务必提前7天预约！"});
+        alerts.push({icon:"fa-car", text:"库尔德宁/独库公路未开，走218国道注意牛羊"});
+        alerts.push({icon:"fa-train", text:"伊宁→乌鲁木齐夜火车，提前购软卧"});
         return alerts.slice(0,5);
     }
     function renderAlerts() {
@@ -273,20 +257,18 @@
     }
     function renderRouteSteps() {
         const nodes = [
-            { name:"伊宁", type:"stay", label:"🏨 住宿" }, { name:"赛里木湖", type:"visit", label:"🎫 游玩" },
-            { name:"特克斯", type:"stay2", label:"🏨 住宿2晚" }, { name:"喀拉峻", type:"visit", label:"🌿 游玩" },
-            { name:"琼库什台", type:"stay", label:"🏨 住宿" }, { name:"巩留", type:"stay", label:"🏨 住宿" },
+            { name:"乌鲁木齐", type:"stay", label:"🏨 起点" }, { name:"赛里木湖", type:"visit", label:"🎫 游玩" },
+            { name:"特克斯", type:"stay", label:"🏨 住宿" }, { name:"喀拉峻", type:"visit", label:"🌿 游玩" },
             { name:"库尔德宁", type:"visit", label:"⛰️ 游玩" }, { name:"新源", type:"stay", label:"🏨 住宿" },
-            { name:"那拉提", type:"stay", label:"🏨 住宿" }
+            { name:"那拉提", type:"stay", label:"🏨 住宿" }, { name:"伊宁", type:"stay", label:"🏨 还车+火车" }
         ];
-        const driveTimes = ["", "2h", "3.2h", "1h", "3h", "3h", "3h", "2h", "1.5h"];
+        const driveTimes = ["", "6h", "3.2h", "1h", "3h", "2h", "1.5h", "4h"];
         const container = document.getElementById('routeSteps');
         container.innerHTML = '';
         nodes.forEach((node, idx) => {
             const span = document.createElement('div');
             span.className = 'route-node';
-            if(node.type === 'stay2') span.style.background = '#ffe4c4';
-            else if(node.type === 'stay') span.style.background = '#e1f0fe';
+            if(node.type === 'stay') span.style.background = '#e1f0fe';
             else span.style.background = '#e2f3db';
             span.innerHTML = `<strong>${node.name}</strong><small>${node.label}</small>`;
             container.appendChild(span);
@@ -299,15 +281,15 @@
         });
     }
     const spotInfoMap = {
-        "松树头":"登高俯瞰赛湖全景，木栈道徒步约30分钟", "S弯公路":"公路大片经典机位", "点将台":"乌孙古迹，观日落", "果子沟大桥":"斜拉桥横跨峡谷",
-        "鲜花台":"喀拉峻核心花海", "猎鹰台":"俯瞰峡谷雪山", "人体草原":"光影曲线摄影地", "琼库什台村":"原始哈萨克村落",
-        "乌孙古道":"著名徒步路线", "齐梦德观景台":"270°雪山云杉", "游牧人家":"那拉提核心", "网红桥":"森林小桥", "空中草原":"海拔2200米草原",
-        "喀赞其民俗街":"蓝色小镇", "伊宁市区（补给）":"采购物资"
+        "松树头":"登高俯瞰赛湖全景", "S弯公路":"公路大片机位", "点将台":"乌孙古迹观日落", "果子沟大桥":"斜拉桥横跨峡谷",
+        "鲜花台":"喀拉峻花海", "猎鹰台":"俯瞰峡谷雪山", "人体草原":"光影曲线摄影地", "齐梦德观景台":"270°雪山云杉",
+        "游牧人家":"那拉提核心", "网红桥":"森林小桥", "空中草原":"海拔2200米草原", "喀赞其民俗街":"蓝色小镇",
+        "乌鲁木齐市区":"大巴扎美食", "伊宁火车站":"夜火车返回"
     };
     function showSpotInfo(spot) { alert(`✨ ${spot}\n${spotInfoMap[spot] || '伊犁必去打卡地'}`); }
     function formatTransport(segments) {
         if(!segments) return '—';
-        return segments.map(seg => `<div class="transport-line">${seg.mode === '飞机' ? '✈️' : '🚗'} ${seg.startTime} ${seg.from}出发 ——> ${seg.endTime} ${seg.to}到达（车程${seg.duration}）</div>`).join('');
+        return segments.map(seg => `<div class="transport-line">${seg.mode === '飞机' ? '✈️' : seg.mode === '火车' ? '🚆' : '🚗'} ${seg.startTime} ${seg.from}出发 ——> ${seg.endTime} ${seg.to}到达（${seg.duration}）</div>`).join('');
     }
     function renderTimeline() {
         const timelineDiv = document.getElementById('timeline');
@@ -339,7 +321,7 @@
         renderRouteSteps();
         renderTimeline();
         renderAlerts();
-        await renderWeather();  // 异步获取实时天气
+        await renderWeather();
     }
     init();
 </script>
