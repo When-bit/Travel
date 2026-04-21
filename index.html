@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>伊犁环线 8日追风 | 真实行程看板</title>
+    <title>伊犁环线·8日追风 | 真实行程看板</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -26,14 +26,6 @@
         .dress-tip { font-size: 0.7rem; color: #5e7c4e; }
         .checklist { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
         .checklist-item { background: #eef3ea; border-radius: 30px; padding: 5px 14px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; }
-        .route-map { background: white; border-radius: 28px; padding: 20px 16px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-        .route-title { font-weight: 600; margin-bottom: 18px; font-size: 1rem; }
-        .route-steps { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 8px; }
-        .route-node { background: #eef3e8; border-radius: 60px; padding: 8px 20px; text-align: center; min-width: 100px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #cde0c2; }
-        .route-node strong { font-size: 0.9rem; display: block; color: #2b5e2a; }
-        .route-node small { font-size: 0.7rem; color: #5f7c4e; display: block; }
-        .route-arrow { font-size: 1.2rem; color: #8bb56a; font-weight: bold; display: inline-flex; flex-direction: column; align-items: center; }
-        .drive-time { font-size: 0.65rem; color: #b4622c; background: #fff0e0; padding: 2px 6px; border-radius: 20px; margin-top: 2px; white-space: nowrap; }
         .timeline { display: flex; flex-direction: column; gap: 20px; }
         .day-card { background: white; border-radius: 28px; box-shadow: 0 5px 16px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e2efda; }
         .day-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #fefef7; cursor: pointer; flex-wrap: wrap; gap: 10px; }
@@ -58,14 +50,14 @@
         .budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 12px; }
         .budget-item { background: #fefef7; border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #e2efda; }
         .budget-number { font-size: 1.5rem; font-weight: 800; color: #2c6e2f; }
-        @media (max-width: 550px) { .day-header { flex-direction: column; align-items: flex-start; } .route-node { padding: 6px 16px; min-width: 80px; } .route-arrow { font-size: 1rem; } }
+        @media (max-width: 550px) { .day-header { flex-direction: column; align-items: flex-start; } }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="hero">
-        <h1><i class="fas fa-car-side"></i> 伊犁环线 8日追风</h1>
-        <p>赛里木湖 · 喀拉峻 · 库尔德宁 · 那拉提 | 乌鲁木齐进出 · 火车卧铺返程</p>
+        <h1><i class="fas fa-car-side"></i> 伊犁环线·8日追风</h1>
+        <p>赛里木湖 · 喀拉峻 · 库尔德宁 · 那拉提 | 乌鲁木齐进出 </p>
         <div class="badge"><i class="fas fa-calendar-alt"></i> 4月26日 — 5月3日 | 机票+酒店+租车已订</div>
     </div>
 
@@ -86,15 +78,7 @@
     <div class="info-card">
         <div class="info-title"><i class="fas fa-suitcase"></i> 行李必备清单</div>
         <div class="checklist" id="checklist"></div>
-        <div class="text-xs text-gray-500 mt-3">⚠️ 重点：身份证/驾驶证、冲锋衣+抓绒、徒步鞋、防晒霜、感冒药、现金500元、充电宝</div>
-    </div>
-
-    <!-- 环线路线图 -->
-    <div class="route-map">
-        <div class="route-title"><i class="fas fa-map-marked-alt"></i> 环线路线 · 车程与住宿</div>
-        <div class="route-steps" id="routeSteps"></div>
-        <div style="font-size:11px; margin-top:12px; text-align:center; color:#5b7c48;">🚗 数字为车程 | 🏨 住宿点 | 🚆 夜火车返程</div>
-    </div>
+       
 
     <!-- 时间轴行程（8天，内嵌驾驶+游玩攻略） -->
     <div class="timeline" id="timeline"></div>
@@ -105,15 +89,15 @@
         <div class="budget-grid">
             <div class="budget-item"><div class="text-sm text-gray-500">机票</div><div class="budget-number">¥5,000</div><div class="text-xs">北京⇋乌鲁木齐</div></div>
             <div class="budget-item"><div class="text-sm text-gray-500">租车（含全额保险）</div><div class="budget-number">¥2,257</div><div class="text-xs">大众探影 · 7天</div></div>
-            <div class="budget-item"><div class="text-sm text-gray-500">住宿（7晚）</div><div class="budget-number">¥4,046</div><div class="text-xs">明细见行程卡片</div></div>
+            <div class="budget-item"><div class="text-sm text-gray-500">住宿（7晚）</div><div class="budget-number">¥3,459</div><div class="text-xs">明细见行程卡片</div></div>
             <div class="budget-item"><div class="text-sm text-gray-500">门票</div><div class="budget-number">¥1,800</div><div class="text-xs">赛湖300+喀拉峻500+库尔德宁500+那拉提500</div></div>
-            <div class="budget-item"><div class="text-sm text-gray-500">火车卧铺</div><div class="budget-number">约¥500</div><div class="text-xs">伊宁→乌鲁木齐（待抢票）</div></div>
+            <div class="budget-item"><div class="text-sm text-gray-500">高铁票</div><div class="budget-number">约¥300</div><div class="text-xs">伊宁→乌鲁木齐（5月2日15:55）</div></div>
             <div class="budget-item"><div class="text-sm text-gray-500">油费+过路费</div><div class="budget-number">约¥1,500</div><div class="text-xs">环线约1800km</div></div>
             <div class="budget-item"><div class="text-sm text-gray-500">餐饮及其他</div><div class="budget-number">约¥1,500</div><div class="text-xs">丰俭由人</div></div>
         </div>
         <div class="mt-4 pt-3 border-t border-gray-100 text-center">
-          <div class="text-lg font-bold text-lake">总计预算 ≈ ¥16,600 – ¥17,600</div>
-            <div class="text-xs text-gray-500 mt-1">（不含个人购物，人均约¥8,500-9,000）</div>
+            <div class="text-lg font-bold text-lake">总计预算 ≈ ¥15,800 – ¥16,800</div>
+            <div class="text-xs text-gray-500 mt-1">（不含个人购物，人均约¥7,900-8,400）</div>
         </div>
     </div>
 
@@ -121,7 +105,7 @@
 </div>
 
 <script>
-    // ======================== 行程数据（真实预订，D2交通已删除车型） ========================
+    // ======================== 行程数据（价格已更新） ========================
     const daysData = [
         { day:1, date:"4月26日", weekday:"周日", theme:"夜航·启程",
           transportSegments: [ { from:"北京大兴", to:"乌鲁木齐", startTime:"20:55", endTime:"次日01:30", duration:"飞行4.5小时", mode:"飞机", flightNo:"MU6109" } ],
@@ -133,11 +117,11 @@
           playTip:"无游玩，好好休息。"
         },
         { day:2, date:"4月27日", weekday:"周一", theme:"取车·长途奔袭赛湖", weatherIcon:"🚗",
-          transportSegments: [ { from:"乌鲁木齐德港万达", to:"赛里木湖", startTime:"10:00", endTime:"16:00", duration:"6小时", mode:"自驾" } ],  // 已删除车型信息
+          transportSegments: [ { from:"乌鲁木齐德港万达", to:"赛里木湖", startTime:"10:00", endTime:"16:00", duration:"6小时", mode:"自驾" } ],
           core:"9:00前往德港万达取车，10:00出发，连霍高速，精河服务区午餐，傍晚抵达赛里木湖城际酒店", keySpots:["连霍高速风光","精河服务区"],
-          hotel:"赛里木湖城际酒店", hotelPrice:"1017元/晚", mealNote:"含双早",
+          hotel:"赛里木湖城际酒店", hotelPrice:"880元/晚", mealNote:"含双早",
           meals: { breakfast:"酒店早餐", lunch:"精河服务区简餐", dinner:"赛湖高白鲑鱼餐厅" },
-          fixedCostDay:{ carRent:2257, accommodation:1017, tickets:0 }, reminder:"租车费用2257元已含全额保险，长途驾驶两人换开，下午16:00到后可环湖东门看日落",
+          fixedCostDay:{ carRent:2257, accommodation:880, tickets:0 }, reminder:"租车费用2257元已含全额保险，长途驾驶两人换开，下午16:00到后可环湖东门看日落",
           driveTip:"🚗 驾驶提醒：连霍高速大车多，区间测速，每2小时休息一次；精河服务区有热水和餐厅。",
           playTip:"🎯 游玩攻略：抵达后先办入住，趁傍晚游览赛湖东门区域，松树头木栈道登高看日落，冰推季可在南门附近观赏碎冰奇观。"
         },
@@ -171,28 +155,31 @@
         { day:6, date:"5月1日", weekday:"周五", theme:"那拉提·空中草原", weatherIcon:"🌄",
           transportSegments: [ { from:"新源", to:"那拉提", startTime:"08:00", endTime:"09:30", duration:"1.5小时", mode:"自驾" } ],
           core:"游牧人家区域，网红桥打卡，骑马深入雪山下，入住金陵山庄（含自助火锅）", keySpots:["游牧人家","网红桥","空中草原","森林公园"],
-          hotel:"那拉提金陵山庄", hotelPrice:"1500元（已付）", mealNote:"含双早+自助火锅",
+          hotel:"那拉提金陵山庄", hotelPrice:"1200元（已付）", mealNote:"含双早+自助火锅",
           meals: { breakfast:"酒店早餐", lunch:"那拉提景区小吃", dinner:"酒店自助火锅" },
-          fixedCostDay:{ accommodation:1500, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序预约自驾票！已联系酒店协助。", reminder:"网红桥上午人少，骑马80元/小时，海拔较高注意保暖",
+          fixedCostDay:{ accommodation:1200, tickets:500 }, ticketsNeed:true, urgentReminder:"⚠️ 必须提前7天在“智游那拉提”小程序预约自驾票！已联系酒店协助。", reminder:"网红桥上午人少，骑马80元/小时，海拔较高注意保暖",
           driveTip:"🚗 驾驶提醒：新源→那拉提走G218，路况好但牲畜穿行，注意减速；景区内自驾需凭预约票进入，遵守限速。",
           playTip:"🎯 游玩攻略：自驾票48小时有效，可二进。游牧人家区域是精华，网红桥在森林小溪边；骑马推荐2小时线路到雪山脚下。晚上享受酒店自助火锅。"
         },
-        { day:7, date:"5月2日", weekday:"周六", theme:"返程伊宁·夜火车", weatherIcon:"🚆",
-          transportSegments: [ { from:"那拉提", to:"伊宁", startTime:"14:00", endTime:"18:00", duration:"4小时", mode:"自驾" }, { from:"伊宁", to:"乌鲁木齐", startTime:"23:00", endTime:"07:00+1", duration:"夜火车8小时", mode:"火车" } ],
-          core:"上午可二进那拉提，下午返回伊宁，逛喀赞其民俗街，晚餐后20:00前还车，赴伊宁站乘软卧返乌", keySpots:["喀赞其民俗街","伊宁火车站"],
-          hotel:"火车软卧（待抢票）", hotelPrice:"约500元/双人", mealNote:"火车上",
-          meals: { breakfast:"酒店早餐", lunch:"那拉提简餐", dinner:"伊宁烤包子/抓饭" },
-          fixedCostDay:{ accommodation:500, tickets:0 }, reminder:"20:00前在伊宁火车站服务点还车，火车票提前12306抢软卧下铺",
-          driveTip:"🚗 驾驶提醒：那拉提→伊宁走G218或高速，约4小时，注意限速和加油站；还车前加满油，拍照留底。",
-          playTip:"🎯 游玩攻略：上午二进那拉提补拍照片；伊宁喀赞其民俗街蓝色小巷免费，吃伊孜海尔冰淇淋，拍民族风写真。"
+        { day:7, date:"5月2日", weekday:"周六", theme:"返程伊宁·高铁·乌市", weatherIcon:"🚄",
+          transportSegments: [ 
+              { from:"那拉提", to:"伊宁", startTime:"09:00", endTime:"13:00", duration:"4小时", mode:"自驾" },
+              { from:"伊宁", to:"乌鲁木齐", startTime:"15:55", endTime:"20:30", duration:"高铁约4.5小时", mode:"高铁" }
+          ],
+          core:"上午从那拉提出发，13:00前抵达伊宁还车，午餐后乘15:55高铁返回乌鲁木齐，当晚入住温德姆酒店", keySpots:["伊宁站","乌鲁木齐温德姆"],
+          hotel:"乌鲁木齐温德姆酒店", hotelPrice:"350元/晚", mealNote:"含双早",
+          meals: { breakfast:"酒店早餐", lunch:"伊宁市区简餐", dinner:"高铁/乌鲁木齐市区" },
+          fixedCostDay:{ accommodation:350, tickets:300 }, reminder:"高铁票提前12306购买（二等座约150元/人），还车预留加油时间",
+          driveTip:"🚗 驾驶提醒：那拉提→伊宁走G218，约4小时，注意限速；还车前加满油，拍照留底。",
+          playTip:"🚄 游玩攻略：高铁沿途可欣赏北疆风光，当晚入住温德姆，好好休息为次日返程准备。"
         },
         { day:8, date:"5月3日", weekday:"周日", theme:"乌鲁木齐·返京", weatherIcon:"🛫",
           transportSegments: [ { from:"乌鲁木齐", to:"北京大兴", startTime:"14:30", endTime:"18:25", duration:"飞行4小时", mode:"飞机", flightNo:"MU6108" } ],
-          core:"早7:00抵达乌鲁木齐站，存行李后逛大巴扎或红山公园，午餐后赴机场返京", keySpots:["国际大巴扎","红山公园"],
+          core:"上午可逛大巴扎或红山公园，午餐后赴机场返京", keySpots:["国际大巴扎","红山公园"],
           hotel:"—", hotelPrice:"0", mealNote:"无",
-          meals: { breakfast:"火车早餐/自理", lunch:"乌鲁木齐市区", dinner:"飞机餐" },
+          meals: { breakfast:"酒店早餐", lunch:"乌鲁木齐市区", dinner:"飞机餐" },
           fixedCostDay:{ accommodation:0, tickets:0 }, reminder:"11:00前出发去机场，预留安检时间",
-          driveTip:"今日无驾驶。建议火车站寄存行李（约20元/件），乘地铁或打车前往大巴扎。",
+          driveTip:"今日无驾驶。建议乘地铁或打车前往大巴扎。",
           playTip:"🎯 游玩攻略：大巴扎可买干果，红山公园俯瞰乌市；午餐推荐楼兰秘烤或简单快餐。"
         }
     ];
@@ -246,7 +233,7 @@
         container.innerHTML = html;
     }
 
-    const checklistItems = ["身份证+驾驶证", "冲锋衣+抓绒内胆", "防滑徒步鞋", "防晒霜SPF50+墨镜", "感冒药/肠胃药", "充电宝+数据线", "现金500元", "保温杯+润唇膏", "相机/无人机", "火车票凭证"];
+    const checklistItems = ["身份证+驾驶证", "冲锋衣+抓绒内胆", "防滑徒步鞋", "防晒霜SPF50+墨镜", "感冒药/肠胃药", "充电宝+数据线", "现金500元", "保温杯+润唇膏", "相机/无人机", "高铁票凭证"];
     function renderChecklist() {
         document.getElementById('checklist').innerHTML = checklistItems.map(i => `<div class="checklist-item"><i class="fas fa-check-circle" style="color:#4A7C59"></i> ${i}</div>`).join('');
     }
@@ -260,7 +247,7 @@
         else alerts.push({icon:"fa-check-circle", text:"行程进行中"});
         const naranDate = new Date(2026, 4, 2);
         if(today < naranDate && (naranDate - today) <= 7) alerts.push({icon:"fa-ticket-alt", text:"那拉提自驾票务必4月24日预约！已联系酒店协助"});
-        alerts.push({icon:"fa-train", text:"伊宁→乌市软卧待抢票，提前12306关注"});
+        alerts.push({icon:"fa-train", text:"伊宁→乌市高铁票提前12306购买（15:55发车）"});
         alerts.push({icon:"fa-car", text:"租车已含全额保险，德港万达取车，伊宁站还车"});
         return alerts.slice(0,5);
     }
@@ -269,36 +256,12 @@
         document.getElementById('alertList').innerHTML = alerts.map(a => `<div class="alert-item"><i class="fas ${a.icon}"></i> ${a.text}</div>`).join('');
     }
 
-    function renderRouteSteps() {
-        const nodes = [
-            { name:"乌鲁木齐", type:"stay" }, { name:"赛里木湖", type:"visit" }, { name:"特克斯", type:"stay" },
-            { name:"喀拉峻", type:"visit" }, { name:"库尔德宁", type:"visit" }, { name:"新源", type:"stay" },
-            { name:"那拉提", type:"stay" }, { name:"伊宁", type:"stay" }
-        ];
-        const times = ["","6h","3.2h","1h","3h","2h","1.5h","4h"];
-        const container = document.getElementById('routeSteps');
-        container.innerHTML = '';
-        nodes.forEach((node, idx) => {
-            const span = document.createElement('div');
-            span.className = 'route-node';
-            span.style.background = node.type === 'stay' ? '#e1f0fe' : '#e2f3db';
-            span.innerHTML = `<strong>${node.name}</strong><small>${node.type === 'stay' ? '🏨 住宿' : '🎫 游玩'}</small>`;
-            container.appendChild(span);
-            if(idx < nodes.length-1) {
-                const arrow = document.createElement('div');
-                arrow.className = 'route-arrow';
-                arrow.innerHTML = `<i class="fas fa-arrow-right"></i><span class="drive-time">${times[idx+1]}</span>`;
-                container.appendChild(arrow);
-            }
-        });
-    }
-
     const spotInfo = { "松树头":"登高瞰赛湖全景","S弯公路":"公路大片机位","点将台":"观日落","果子沟大桥":"峡谷大桥","鲜花台":"喀拉峻花海","猎鹰台":"俯瞰雪山","人体草原":"光影曲线","齐梦德观景台":"270°雪山云杉","游牧人家":"那拉提核心","网红桥":"森林小桥","空中草原":"海拔2200米","喀赞其民俗街":"蓝色小镇","国际大巴扎":"新疆特色市场","红山公园":"俯瞰乌市" };
     function showSpot(spot) { alert(`✨ ${spot}\n${spotInfo[spot] || '伊犁必去打卡地'}`); }
 
     function formatTransport(segs) {
         if(!segs) return '—';
-        return segs.map(s => `<div class="transport-line">${s.mode === '飞机' ? '✈️' : s.mode === '火车' ? '🚆' : '🚗'} ${s.startTime} ${s.from} → ${s.endTime} ${s.to}（${s.duration}）${s.flightNo ? ` ${s.flightNo}` : ''}</div>`).join('');
+        return segs.map(s => `<div class="transport-line">${s.mode === '飞机' ? '✈️' : s.mode === '火车' ? '🚆' : s.mode === '高铁' ? '🚄' : '🚗'} ${s.startTime} ${s.from} → ${s.endTime} ${s.to}（${s.duration}）${s.flightNo ? ` ${s.flightNo}` : ''}</div>`).join('');
     }
 
     function renderTimeline() {
@@ -331,7 +294,6 @@
 
     async function init() {
         renderChecklist();
-        renderRouteSteps();
         renderTimeline();
         renderAlerts();
         await renderWeather();
